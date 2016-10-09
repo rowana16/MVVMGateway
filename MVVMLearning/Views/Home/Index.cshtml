@@ -1,0 +1,59 @@
+﻿@model MVVMLearningData.TrainingProductViewModel
+@{
+    ViewBag.Title = "MVVM Gateway";
+}
+
+@using (Html.BeginForm())
+{
+    <!--  Begin Hidden Fields Area -->
+    <!--  End Hidden Fields Area -->
+    <!--  Begin Search Area -->
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h1 class="panel-title">Search For Products</h1>
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                @Html.Label("Product Name")
+                @Html.TextBox("SearchProductName", "", new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="panel-footer">
+            <button id="btnSearch" class="btn btn-sm btn-primary">Search</button>
+            <button id="btnReset" class="btn btn-sm btn-primary">Reset</button>
+        </div>
+    </div>
+    <!--  End Search Area -->
+    <!--  Begin List Area -->
+    <div class="table-responsive">
+        <table class="table table-condensed table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Introduction Date</th>
+                    <th>Url</th>
+                    <th>Price</th>
+                </tr>
+                
+            </thead>
+            <tbody>
+                 @foreach( var item in Model.Products )
+                 {
+                     <tr>
+                         <td>@item.ProductName </td>
+                         <td>@item.IntroductionDate</td>
+                         <td>@item.Url</td>
+                         <td>@item.Price.ToString("c")</td>
+                     </tr>
+                 }
+            </tbody>
+        </table>
+    </div>
+    <!--  End List Area -->
+}
+
+@section scripts{
+    <script>
+    </script>
+
+}
