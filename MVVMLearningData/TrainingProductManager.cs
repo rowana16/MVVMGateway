@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,12 +8,55 @@ namespace MVVMLearningData
 {
     public class TrainingProductManager
     {
-        public List<TrainingProduct> Get()
+
+
+        public List<TrainingProduct> Get(TrainingProduct searchResult)
         {
             List<TrainingProduct> ret = new List<TrainingProduct>();
-            ret = CreateMockData();
-
             // TODO: Add you Data Access Method here
+
+
+            ret = CreateMockData();
+            if (!string.IsNullOrEmpty(searchResult.ProductName))
+            {
+                ret = ret.FindAll(p => p.ProductName.ToLower().StartsWith(searchResult.ProductName, StringComparison.CurrentCultureIgnoreCase));
+            }
+           
+            return ret;
+
+        }
+
+        public List<KeyValuePair<string, string>> ValidationErrors { get; set; }
+        public TrainingProductManager()
+        {
+            ValidationErrors = new List<KeyValuePair<string, string>>();
+        }
+
+
+        public bool Validate(TrainingProduct entity)
+        {
+            ValidationErrors.Clear();
+
+            if (!string.IsNullOrEmpty(entity.ProductName))
+            {
+                if(entity.ProductName.ToLower() == entity.ProductName)
+                {
+                    ValidationErrors.Add(new KeyValuePair<string, string>("ProductName", "Product Name must not be all lower case.")); 
+                }
+            }
+            return (ValidationErrors.Count == 0);
+        }
+
+        public bool Insert(TrainingProduct entity)
+        {
+            bool ret = false;
+
+            ret = Validate(entity);
+            if (ret)
+            {
+                //TODO: Create INSERT code here
+            }
+
             return ret;
 
         }
