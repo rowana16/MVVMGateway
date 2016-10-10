@@ -18,6 +18,7 @@ namespace MVVMLearningData
         public bool IsValid { get; set; }
         public string Mode { get; set; }
         public List<KeyValuePair<string, string>> ValidationErrors { get; set; }
+        public string EventArgument { get; set; }
 
         // constructor
         public TrainingProductViewModel()
@@ -57,7 +58,8 @@ namespace MVVMLearningData
                     break;
 
                 case "edit":
-                    Get(); // populate the Products property
+                    IsValid = true;
+                    Edit();
                     break;
 
                 case "save":
@@ -67,6 +69,13 @@ namespace MVVMLearningData
                         Get();
                     }
                     break;
+
+                case "delete":
+                    ResetSearch();
+                    Delete();
+                    break;
+
+
 
                 case "cancel":
                     ListMode();
@@ -108,6 +117,10 @@ namespace MVVMLearningData
                 mgr.Insert(Entity);
 
             }
+            else
+            {
+                mgr.Update(Entity);
+            }
 
             ValidationErrors = mgr.ValidationErrors;
 
@@ -122,11 +135,15 @@ namespace MVVMLearningData
                 {
                     AddMode();
                 }
+                else
+                {
+                    EditMode();
+                }
             }
         }
 
         //==================================================================================================================
-        //Add Actions
+        //Add Method
 
         private void Add()
         {
@@ -138,6 +155,34 @@ namespace MVVMLearningData
 
             AddMode();
         }
+
+        //==================================================================================================================
+        //Edit Method
+
+        private void Edit()
+        {
+            TrainingProductManager mgr = new TrainingProductManager();
+            Entity = mgr.Get(Convert.ToInt32(EventArgument));
+
+            EditMode();
+        }
+
+        //==================================================================================================================
+        //Delete Method
+
+        private void Delete()
+        {
+            TrainingProductManager mgr = new TrainingProductManager();
+            Entity = new TrainingProduct();
+            Entity.ProductId = Convert.ToInt32(EventArgument);
+
+            mgr.Delete(Entity);
+
+            Get();
+            ListMode();
+
+        }
+
         //==================================================================================================================
         //Add Mode
         private void AddMode()
@@ -150,11 +195,24 @@ namespace MVVMLearningData
         }
 
         //==================================================================================================================
+        //Add Mode
+        private void EditMode()
+        {
+            Mode = "Edit";
+
+            IsSearchAreaVisible = false;
+            IsListAreaVisible = false;
+            IsDetailAreaVisible = true;
+        }
+
+
+        //==================================================================================================================
         // init
         private void Init()
         {
             EventCommand = "List";
             ValidationErrors = new List<KeyValuePair<string, string>>();
+            EventArgument = "";
             ListMode();
         }
         //==================================================================================================================

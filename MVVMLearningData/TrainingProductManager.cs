@@ -9,6 +9,36 @@ namespace MVVMLearningData
     public class TrainingProductManager
     {
 
+       
+
+        //==================================================================================================================================================
+        //Properties and Constructor
+
+        public List<KeyValuePair<string, string>> ValidationErrors { get; set; }
+        public TrainingProductManager()
+        {
+            ValidationErrors = new List<KeyValuePair<string, string>>();
+        }
+
+        //==================================================================================================================================================
+        // Validate Method
+
+        public bool Validate(TrainingProduct entity)
+        {
+            ValidationErrors.Clear();
+
+            if (!string.IsNullOrEmpty(entity.ProductName))
+            {
+                if(entity.ProductName.ToLower() == entity.ProductName)
+                {
+                    ValidationErrors.Add(new KeyValuePair<string, string>("ProductName", "Product Name must not be all lower case.")); // Add any Errors to Validation Errors
+                }
+            }
+            return (ValidationErrors.Count == 0);
+        }
+
+        //==================================================================================================================================================
+        // Get Method (TrainingProduct)
 
         public List<TrainingProduct> Get(TrainingProduct searchResult)
         {
@@ -21,31 +51,43 @@ namespace MVVMLearningData
             {
                 ret = ret.FindAll(p => p.ProductName.ToLower().StartsWith(searchResult.ProductName, StringComparison.CurrentCultureIgnoreCase));
             }
-           
+
             return ret;
 
         }
 
-        public List<KeyValuePair<string, string>> ValidationErrors { get; set; }
-        public TrainingProductManager()
+        //==================================================================================================================================================
+        // Get Method (Int)
+
+        public TrainingProduct Get (int productId)
         {
-            ValidationErrors = new List<KeyValuePair<string, string>>();
+            List<TrainingProduct> list = new List<TrainingProduct>();
+            TrainingProduct ret = new TrainingProduct();
+
+            //TODO: Call your data Access Method Here
+            list = CreateMockData();
+
+            ret = list.Find(p => p.ProductId == productId);
+            return ret;
         }
 
+        //==================================================================================================================================================
+        // Update Method (TrainingProduct)
 
-        public bool Validate(TrainingProduct entity)
+        public bool Update(TrainingProduct entity)
         {
-            ValidationErrors.Clear();
-
-            if (!string.IsNullOrEmpty(entity.ProductName))
+            bool ret = false;
+            ret = Validate(entity);
+            if (ret)
             {
-                if(entity.ProductName.ToLower() == entity.ProductName)
-                {
-                    ValidationErrors.Add(new KeyValuePair<string, string>("ProductName", "Product Name must not be all lower case.")); 
-                }
+                //TODO: Create Update Code Here
             }
-            return (ValidationErrors.Count == 0);
+
+            return ret;
         }
+
+        //==================================================================================================================================================
+        // Insert Method
 
         public bool Insert(TrainingProduct entity)
         {
@@ -60,6 +102,21 @@ namespace MVVMLearningData
             return ret;
 
         }
+
+        //==================================================================================================================================================
+        // Delete Method
+
+        public bool Delete(TrainingProduct entity)
+        {
+            //TODO: Create Delete Code
+
+            return true;
+        }
+
+        //==================================================================================================================================================
+        // Seeded Data - CreateMockData()
+
+
         private List<TrainingProduct> CreateMockData()
         {
             List<TrainingProduct> ret = new List<TrainingProduct>();

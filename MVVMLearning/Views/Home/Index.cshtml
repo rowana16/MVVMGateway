@@ -8,6 +8,7 @@
     <!--  Begin Hidden Fields Area -->
     @Html.HiddenFor(m => m.EventCommand)
     @Html.HiddenFor(m => m.Mode)
+    @Html.HiddenFor(m=> m.EventArgument)
     <!--  End Hidden Fields Area -->
     <!--  Begin Search Area -->
     if (Model.IsSearchAreaVisible)
@@ -88,10 +89,12 @@
             <table class="table table-condensed table-bordered table-striped table-hover">
                 <thead>
                     <tr>
+                        <th class="pdsa-action-button-column">Edit</th>
                         <th>Product Name</th>
                         <th>Introduction Date</th>
                         <th>Url</th>
                         <th>Price</th>
+                        <th class="pdsa-action-button-column">Delete</th>
                     </tr>
 
                 </thead>
@@ -99,10 +102,20 @@
                     @foreach (var item in Model.Products)
                     {
                         <tr>
+                            <td class="pdsa-action-button-column">
+                                <a href="#" data-pdsa-action="edit" class="btn btn-default btn-sm" data-pdsa-val="@item.ProductId">
+                                    <i class="glyphicon glyphicon-edit"></i>
+                                </a>
+                            </td>
                             <td>@item.ProductName </td>
                             <td>@item.IntroductionDate</td>
                             <td>@item.Url</td>
                             <td>@item.Price.ToString("c")</td>
+                            <td class="pdsa-action-button-column">
+                                <a href="#" data-pdsa-action="delete" class="btn btn-default btn-sm" data-pdsa-val="@item.ProductId" onclick="return confirm('Delete this product?')">
+                                    <i class="glyphicon glyphicon-trash"></i>
+                                </a>
+                            </td>
                         </tr>
                     }
                 </tbody>
@@ -119,6 +132,7 @@
             $('[data-pdsa-action]').on('click', function (e) {
                 e.preventDefault();
                 $('#EventCommand').val($(this).data('pdsa-action')); //bind to the EventCommand Model Property
+                $('#EventArgument').val($(this).data('pdsa-val')); //bind to the EventCommand Model Property
                 $('form').submit();
             });
         });
