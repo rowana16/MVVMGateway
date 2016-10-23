@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVVMLearning", "MVVMLearnin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVVMLearningData", "MVVMLearningData\MVVMLearningData.csproj", "{52F7E4D4-A2BC-4EF9-94E5-8DC527C67611}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVVMLearningCommon", "MVVMLearningCommon\MVVMLearningCommon.csproj", "{31CAEF18-9CD9-4CF5-9429-B30F58F56D87}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{52F7E4D4-A2BC-4EF9-94E5-8DC527C67611}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52F7E4D4-A2BC-4EF9-94E5-8DC527C67611}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52F7E4D4-A2BC-4EF9-94E5-8DC527C67611}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31CAEF18-9CD9-4CF5-9429-B30F58F56D87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31CAEF18-9CD9-4CF5-9429-B30F58F56D87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31CAEF18-9CD9-4CF5-9429-B30F58F56D87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31CAEF18-9CD9-4CF5-9429-B30F58F56D87}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

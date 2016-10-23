@@ -196,6 +196,10 @@
     <Content Include="Service References\Application Insights\ConnectedService.json" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MVVMLearningCommon\MVVMLearningCommon.csproj">
+      <Project>{31caef18-9cd9-4cf5-9429-b30f58f56d87}</Project>
+      <Name>MVVMLearningCommon</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MVVMLearningData\MVVMLearningData.csproj">
       <Project>{52f7e4d4-a2bc-4ef9-94e5-8dc527c67611}</Project>
       <Name>MVVMLearningData</Name>

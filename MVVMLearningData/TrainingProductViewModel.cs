@@ -1,115 +1,97 @@
-﻿using System;
+﻿using MVVMLearningCommon;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MVVMLearningData
 {
-    public class TrainingProductViewModel
+    public class TrainingProductViewModel: ViewModelBase
     {
         public List<TrainingProduct> Products { get; set; }
-        public string EventCommand { get; set; }
         public TrainingProduct SearchResult { get; set; }
-        public bool IsDetailAreaVisible { get; set; }
-        public bool IsListAreaVisible { get; set; }
-        public bool IsSearchAreaVisible { get; set; }
         public TrainingProduct Entity { get; set; }
-        public bool IsValid { get; set; }
-        public string Mode { get; set; }
-        public List<KeyValuePair<string, string>> ValidationErrors { get; set; }
-        public string EventArgument { get; set; }
+
+        
+
+        
 
         // constructor
-        public TrainingProductViewModel()
+        public TrainingProductViewModel():base() //call base constructor
+        {
+            
+        }
+
+        protected override void Init()
         {
             Products = new List<TrainingProduct>();
             SearchResult = new TrainingProduct();
             Entity = new TrainingProduct();
             //visibility
-            Init();
-
-
-        }
-       
+            base.Init();
+        }        
 
         //==================================================================================================================
-        public void HandleRequest()
-        {
-            switch (EventCommand.ToLower())
-            {
-                case "list":
-                    Get(); // populate the Products property
-                    break;
-
-                case "search":
-                    Get(); // populate the Products property
-                    break;
-
-                case "reset":
-                    ResetSearch(); // reset the search result
-                    Get();
-                    break;
-
-
-                case "add":
-                    //visibility
-                    Add();
-                    break;
-
-                case "edit":
-                    IsValid = true;
-                    Edit();
-                    break;
-
-                case "save":
-                    Save();
-                    if (IsValid)
-                    {
-                        Get();
-                    }
-                    break;
-
-                case "delete":
-                    ResetSearch();
-                    Delete();
-                    break;
-
-
-
-                case "cancel":
-                    ListMode();
-                    Get(); 
-                    break;
-
-
-                default:
-                    break;
-            }
-        }
-        //==================================================================================================================
-        private void ResetSearch()
+        protected override void ResetSearch()
         {
             SearchResult = new TrainingProduct();
+            base.ResetSearch();
+        }                
+
+        //==================================================================================================================
+        //Add Method
+
+        protected override void Add()
+        {
+            
+            Entity = new TrainingProduct();
+            Entity.IntroductionDate = DateTime.Now;
+            Entity.Url = "http://";
+            Entity.Price = 0;
+
+            base.Add();
         }
 
         //==================================================================================================================
-        //List Mode
-        private void ListMode()
+        //Edit Method
+
+        protected override void Edit()
         {
-            IsValid = true;
-            Mode = "List";
+            TrainingProductManager mgr = new TrainingProductManager();
+            Entity = mgr.Get(Convert.ToInt32(EventArgument));
 
-            IsSearchAreaVisible = true;
-            IsListAreaVisible = true;
-            IsDetailAreaVisible = false;
-
-            
+            base.Edit();
         }
+
+        //==================================================================================================================
+        //Delete Method
+
+        protected override void Delete()
+        {
+            TrainingProductManager mgr = new TrainingProductManager();
+            Entity = new TrainingProduct();
+            Entity.ProductId = Convert.ToInt32(EventArgument);
+
+            mgr.Delete(Entity);
+
+            Get();
+            base.Delete();
+
+        }
+
+             
+        //==================================================================================================================
+
+        protected override void Get()
+        {
+            TrainingProductManager mgr = new TrainingProductManager();
+            Products = mgr.Get(SearchResult);
+            base.Get();
+
+        }
+
         //==================================================================================================================
         //Save
 
-        private void Save()
+        protected override void Save()
         {
             TrainingProductManager mgr = new TrainingProductManager();
             if (Mode == "Add")
@@ -124,104 +106,19 @@ namespace MVVMLearningData
 
             ValidationErrors = mgr.ValidationErrors;
 
-            if (ValidationErrors.Count > 0)
+            base.Save();
+        }
+
+        public override void HandleRequest()
+        {
+            switch (EventCommand.ToLower())
             {
-                IsValid = false;
+                // add additional cases
+                //break;
+                default:
+                    break;
             }
-
-            if (!IsValid)
-            {
-                if (Mode == "Add")
-                {
-                    AddMode();
-                }
-                else
-                {
-                    EditMode();
-                }
-            }
-        }
-
-        //==================================================================================================================
-        //Add Method
-
-        private void Add()
-        {
-            IsValid = true;
-            Entity = new TrainingProduct();
-            Entity.IntroductionDate = DateTime.Now;
-            Entity.Url = "http://";
-            Entity.Price = 0;
-
-            AddMode();
-        }
-
-        //==================================================================================================================
-        //Edit Method
-
-        private void Edit()
-        {
-            TrainingProductManager mgr = new TrainingProductManager();
-            Entity = mgr.Get(Convert.ToInt32(EventArgument));
-
-            EditMode();
-        }
-
-        //==================================================================================================================
-        //Delete Method
-
-        private void Delete()
-        {
-            TrainingProductManager mgr = new TrainingProductManager();
-            Entity = new TrainingProduct();
-            Entity.ProductId = Convert.ToInt32(EventArgument);
-
-            mgr.Delete(Entity);
-
-            Get();
-            ListMode();
-
-        }
-
-        //==================================================================================================================
-        //Add Mode
-        private void AddMode()
-        {
-            Mode = "Add";
-
-            IsSearchAreaVisible = false;
-            IsListAreaVisible = false;
-            IsDetailAreaVisible = true;
-        }
-
-        //==================================================================================================================
-        //Add Mode
-        private void EditMode()
-        {
-            Mode = "Edit";
-
-            IsSearchAreaVisible = false;
-            IsListAreaVisible = false;
-            IsDetailAreaVisible = true;
-        }
-
-
-        //==================================================================================================================
-        // init
-        private void Init()
-        {
-            EventCommand = "List";
-            ValidationErrors = new List<KeyValuePair<string, string>>();
-            EventArgument = "";
-            ListMode();
-        }
-        //==================================================================================================================
-
-        private void Get()
-        {
-            TrainingProductManager mgr = new TrainingProductManager();
-            Products = mgr.Get(SearchResult);
-
+            base.HandleRequest();
         }
     }
 }
